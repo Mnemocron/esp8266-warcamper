@@ -1,0 +1,16 @@
+networks total 	23
+
+secured with :
+none 			0
+WEP 			0
+WPA PSK 		0
+WPA PSK2 		9
+auto 			14
+
+statistics :
+total secured :	100.0	%
+unsecured 		0.0 	%
+WEP 			0.0 	%
+WPA PSK 		0.0 	%
+WPA PSK2 		39.130434782608695 	%
+Auto 			60.869565217391305 	%
