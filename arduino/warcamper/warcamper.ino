@@ -13,12 +13,6 @@
  * 
  */
 /*
- * Board:
- * https://www.sparkfun.com/products/13231
- * 
- * Pinout
- * https://cdn.sparkfun.com/assets/learn_tutorials/4/4/5/esp8266-thing-pinout.png
- * 
  * esp8266 Library for Arduino
  * https://github.com/esp8266/Arduino.git
  * 
@@ -27,21 +21,22 @@
  * 
  * Deep Sleep Guide
  * https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/example-sketch-goodnight-thing-sleep-mode
+ * Connect D0 to RST
  * 
  */
 
 // LIBRARIES
-#include "ESP8266WiFi.h"
-#include "SD.h"
-#include "SPI.h"            // for SD card
+#include <ESP8266WiFi.h>
+#include <SPI.h>            // for SD card
 #include <Wire.h>           // for RTC
-#include <RtcDS1307.h>
+#include <RtcDS1307.h>      // for RTC
+#include <SD.h>
 
 // MAKROS
 #define countof(a) (sizeof(a) / sizeof(a[0]))
 
 // INSTANCES
-RtcDS1307 Rtc;
+RtcDS1307<TwoWire> Rtc(Wire);
 
 // GOLBAL VARIABLES
 int n_new = 0;
@@ -50,7 +45,7 @@ char datenow[20] = {};
 
 // MAIN (setup)
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(74880);
   Serial.println();
   
   //--------RTC SETUP ------------------------------------------------------
@@ -101,6 +96,7 @@ void setup() {
     Serial.print("creating ");
     Serial.println("wifi.txt");
     File newFile = SD.open("wifi.txt", FILE_WRITE);
+    newFile.print("[");
     newFile.close();
   }
   
@@ -121,13 +117,25 @@ void setup() {
     Serial.print(n_new);
     Serial.println(" networks found");
     File writer = SD.open("wifi.txt", FILE_WRITE);
-    writer.println(datenow);          // save datetime to logfile
+    //writer.println(datenow);          // save datetime to logfile
+    
+    String jsonStart = "{\n\"date\":\"";
+    Serial.print(jsonStart);
+    writer.print(jsonStart);
+
+    Serial.print(datenow);
+    writer.print(datenow);
+
+    Serial.print("\",\n\"ap\":[\n");
+    writer.print("\",\n\"ap\":[\n");
+    
     for(int i=0; i<n_new; i++)
     {
-      String logData = "";
+      String logData;
       // Print SSID and RSSI for each network found
-      logData += WiFi.SSID(i);
-      logData += ";";
+      logData += "{\n\"ssid\":";
+      logData += "\"" + WiFi.SSID(i) + "\",\n";
+      logData += "\"enc\":\"";
       switch(WiFi.encryptionType(i))
       {
         case ENC_TYPE_NONE :
@@ -149,16 +157,19 @@ void setup() {
           logData += "err";
           break;
       }
-      logData += ";";
-      // logData += "(";
+      logData += "\",\n";
+      logData += "\"rssi\":";
       logData += WiFi.RSSI(i);
-      // logData += ")";
-      Serial.println(logData);
+      logData += "\n}";
+      if(i != n_new-1){
+        logData += ",";
+      }
+      Serial.print(logData);
       delay(10);
-      writer.println(logData);
+      writer.print(logData);
     }
-    Serial.println("");
-    writer.println("");
+    Serial.print("\n]},");
+    writer.print("\n]},");
     writer.close();
   }
   WiFi.mode(WIFI_OFF);
@@ -174,8 +185,5 @@ void setup() {
 void loop() {
   
 }
-
-
-
 
 

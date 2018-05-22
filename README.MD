@@ -2,34 +2,19 @@
 
 > wardriving (v.) to drive around with a laptop with a wireless card, and an antenna, looking for accessible wireless networks
 
-This is a little project I came up with. Using an esp8266 thing from [Sparkfun].
-Here is the full story on tumblr [part 1] & [part 2]
+Hence a Warcamper would be a stationary device to log Wifi networks in a public area (eg. smartphone access points).
+
+Tested on a WeMos D1 mini Pro + Data Logger Shield (DS1307). But should work on any ESP8266 board with Arduino support. Connect the SD card to the SPI pins and the DS1307 to the I2C port. In order for the deep sleep mode to work, the D0 pin must be connected to the RST pin.
+
+The filename is `WIFI.TXT` but is in json format. Filenames cannot be longer than 3 characters. Before parsing the json file you have to delete the last `,` and add a `]`. The default scanning interval is ~15 seconds. You can use a power bank or a battery shield and install the warcamper in a hidden place.
 
 ## Libraries
 You need the esp8266 libraries for Arduino installed via board manager.
 Get the libraries here [github]
 
-## RTC fix
-I used a cheap RTC which did not provide accurate time feedback.
-In the Java application there is a function called RTC fix.
-This can be used optional. It takes following arguments:
-- path to the input file (usually "wifi.txt" from the warcamper.ino)
-- name of the output file
-- (part of) the date that is listed in the input file
-- three numbers when the scan started (hh,mm,ss)
-- three numbers when the scan was stopped (hh,mm,ss)
-
-````sh
-fixRtc ( "wifi.txt", "wifi_fix.txt", "2016/03", 5, 56, 6, 15, 58, 2 );
-````
-input file is "wifi.txt", output changes to "wifi_fix.txt", scanned: March 2016, started on 05:56:15 (am), stoped on 15:58:02 (pm).
-
 License
 
 MIT
 
-   [Sparkfun]: <https://www.sparkfun.com/products/13231>
-   [part 1]: <http://mnemocron.tumblr.com/post/140440549084/my-warcamping-adventure>
-   [part 2]: <http://mnemocron.tumblr.com/post/141019080869/my-warcamping-adventure>
    [github]: <https://github.com/esp8266/Arduino>
    

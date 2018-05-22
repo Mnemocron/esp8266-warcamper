@@ -1,0 +1,40 @@
+[
+    {
+        "date": "2018/05/22 18:52:50",
+        "ap": [{
+            "ssid": "Neuland Express",
+            "enc": "WPA_PSK2",
+            "rssi": -51
+        }]
+    }, {
+        "date": "2018/05/22 18:53:05",
+        "ap": [{
+            "ssid": "Sunrise_2.4GHz_91AF60",
+            "enc": "AUTO",
+            "rssi": -90
+        }, {
+            "ssid": "Lumpi86",
+            "enc": "AUTO",
+            "rssi": -91
+        }, {
+            "ssid": "Lumpi45",
+            "enc": "WPA_PSK2",
+            "rssi": -93
+        }, {
+            "ssid": "gxn-47120",
+            "enc": "AUTO",
+            "rssi": -93
+        }, {
+            "ssid": "Neuland Express",
+            "enc": "WPA_PSK2",
+            "rssi": -53
+        }]
+    }, {
+        "date": "2018/05/22 18:53:20",
+        "ap": [{
+            "ssid": "Neuland Express",
+            "enc": "WPA_PSK2",
+            "rssi": -61
+        }]
+    }
+]
